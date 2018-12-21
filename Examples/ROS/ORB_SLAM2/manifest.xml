@@ -7,6 +7,8 @@
   <author>Raul Mur-Artal</author>
   <license>GPLv3</license>
   <depend package="roscpp"/>
+  <depend package="rosbag"/>
+  <depend package="rosconsole"/>
   <depend package="tf"/>
   <depend package="sensor_msgs"/>
   <depend package="image_transport"/>
