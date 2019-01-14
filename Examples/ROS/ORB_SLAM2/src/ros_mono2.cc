@@ -189,6 +189,8 @@ int main(int argc, char **argv)
     // Save camera trajectory
     SLAM.SaveKeyFrameTrajectoryTUM(data_folder_path + "KeyFrameTrajectory.txt");
     SLAM.SaveTrajectoryTUM(data_folder_path + "FrameTrajectory.txt");
+    //SLAM.SaveTrajectoryTUM2(data_folder_path + "FrameTrajectory2.txt");
+    //SLAM.SaveTrajectoryKITTI(data_folder_path + "FrameTrajectoryKITTI.txt");
 
     ros::shutdown();
 
