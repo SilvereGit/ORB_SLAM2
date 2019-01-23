@@ -113,11 +113,14 @@ int main(int argc, char **argv)
 	double fps = std::stod(line);
 	double frame_duration = 1.0/fps;
 	std::getline(file, line);
-	bool resize_bool = to_bool(line);
+	//bool resize_bool = to_bool(line);
+	double resize_double = std::stod(line);
+	std::getline(file, line);
+	bool PLOT = to_bool(line);
 	//ROS_INFO_STREAM(line);
 
 	// Create SLAM system. It initializes all system threads and gets ready to process frames.
-	ORB_SLAM2::System SLAM(argv[1],argv[2],ORB_SLAM2::System::MONOCULAR,true);
+	ORB_SLAM2::System SLAM(argv[1],argv[2],ORB_SLAM2::System::MONOCULAR,PLOT);
 
 	ImageGrabber igb(&SLAM);
 	//ros::NodeHandle nodeHandler;
@@ -159,8 +162,8 @@ int main(int argc, char **argv)
 			}
 			//
 			//resize image
-			if(resize_bool){
-				cv::resize(frame, frame, cv::Size(), 0.5, 0.5);
+			if(resize_double != 1.0){
+				cv::resize(frame, frame, cv::Size(), resize_double, resize_double);
 			}
 			//track slam
 			tf::Transform pose = igb.GrabImage(frame, pose_previous, frame_time);
