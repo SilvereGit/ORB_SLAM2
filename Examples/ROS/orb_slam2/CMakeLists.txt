@@ -8,6 +8,7 @@ find_package(catkin REQUIRED COMPONENTS
   image_transport
   message_filters
   cv_bridge
+  tf
 )
 
 find_package(OpenCV  REQUIRED)
