@@ -81,7 +81,7 @@ add_executable(mono src/ros_mono.cc)
 target_link_libraries(mono ${LIBRARIES})
 
 # Node for monocular camera
-add_executable(mono src/ros_mono2.cc)
+add_executable(mono2 src/ros_mono2.cc)
 target_link_libraries(mono2 ${LIBRARIES})
 
 # Node for RGB-D camera
