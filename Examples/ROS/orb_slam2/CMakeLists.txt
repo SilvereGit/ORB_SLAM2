@@ -4,6 +4,7 @@ project(orb_slam2)
 
 find_package(catkin REQUIRED COMPONENTS
   roscpp
+  rosbag
   sensor_msgs
   image_transport
   message_filters
