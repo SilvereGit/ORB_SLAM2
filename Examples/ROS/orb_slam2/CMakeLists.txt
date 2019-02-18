@@ -113,7 +113,7 @@ install(DIRECTORY ${ORB_SLAM2_SOURCE_DIR}/include
 )
 
 ## install orbslam2 library
-install(TARGETS ${ORB_SLAM2_SOURCE_DIR}/lib/libORB_SLAM2.so
+install(FILES ${ORB_SLAM2_SOURCE_DIR}/lib/libORB_SLAM2.so
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 )
 
