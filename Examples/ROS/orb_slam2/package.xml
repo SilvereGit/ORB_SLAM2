@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package>
-  <name>orb_slam2</name>
+  <name>ORB_SLAM2</name>
   <version>1.0.0</version>
   <description>The ORB_SLAM2 package</description>
 
