@@ -74,6 +74,8 @@ set(LIBRARIES
   ${OpenCV_LIBRARIES}
   ${Eigen3_LIBRARIES}
   ${Pangolin_LIBRARIES}
+-lboost_system
+-lconsole_bridge
 )
 
 
@@ -82,8 +84,16 @@ add_executable(mono src/ros_mono.cc)
 target_link_libraries(mono ${LIBRARIES})
 
 # Node for monocular camera
-add_executable(mono2 src/ros_mono2.cc)
-target_link_libraries(mono2 ${LIBRARIES})
+#add_executable(mono2 src/ros_mono2.cc)
+#target_link_libraries(mono2 ${LIBRARIES})
+
+# Node for monocular camera
+rosbuild_add_executable(Mono2
+src/ros_mono2.cc
+)
+target_link_libraries(Mono2
+${LIBRARIES}
+)
 
 # Node for RGB-D camera
 add_executable(rgbd src/ros_rgbd.cc )
