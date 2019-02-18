@@ -80,6 +80,9 @@ set(LIBRARIES
 add_executable(mono src/ros_mono.cc)
 target_link_libraries(mono ${LIBRARIES})
 
+# Node for monocular camera
+add_executable(mono src/ros_mono2.cc)
+target_link_libraries(mono2 ${LIBRARIES})
 
 # Node for RGB-D camera
 add_executable(rgbd src/ros_rgbd.cc )
@@ -107,5 +110,10 @@ install(TARGETS mono rgbd stereo
 ## Mark cpp header files for installation
 install(DIRECTORY ${ORB_SLAM2_SOURCE_DIR}/include
    DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
+)
+
+## install orbslam2 library
+install(TARGETS ${ORB_SLAM2_SOURCE_DIR}/lib/libORB_SLAM2.so
+  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 )
 
