@@ -130,6 +130,6 @@ install(FILES ${ORB_SLAM2_SOURCE_DIR}/Vocabulary/ORBvoc.txt
 DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )
 ##install Pangolin library
-install(FILES ${Pangolin_LIBRARIES}/libpangolin.so
+install(FILES ${Pangolin_LIBRARIES}
 RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
