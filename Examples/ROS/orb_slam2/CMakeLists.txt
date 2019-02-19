@@ -84,16 +84,8 @@ add_executable(mono src/ros_mono.cc)
 target_link_libraries(mono ${LIBRARIES})
 
 # Node for monocular camera
-#add_executable(mono2 src/ros_mono2.cc)
-#target_link_libraries(mono2 ${LIBRARIES})
-
-# Node for monocular camera
-rosbuild_add_executable(Mono2
-src/ros_mono2.cc
-)
-target_link_libraries(Mono2
-${LIBRARIES}
-)
+add_executable(Mono2 src/ros_mono2.cc)
+target_link_libraries(Mono2 ${LIBRARIES})
 
 # Node for RGB-D camera
 add_executable(rgbd src/ros_rgbd.cc )
@@ -112,7 +104,7 @@ target_link_libraries(stereo ${LIBRARIES})
 # See http://ros.org/doc/api/catkin/html/adv_user_guide/variables.html
 
 ## Mark executables and/or libraries for installation
-install(TARGETS mono rgbd stereo
+install(TARGETS mono rgbd stereo Mono2
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
