@@ -125,4 +125,11 @@ install(DIRECTORY ${ORB_SLAM2_SOURCE_DIR}/include
 install(FILES ${ORB_SLAM2_SOURCE_DIR}/lib/libORB_SLAM2.so
   DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 )
-
+## install orb vocabulary
+install(FILES ${ORB_SLAM2_SOURCE_DIR}/Vocabulary/ORBvoc.txt
+DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+)
+##install Pangolin library
+install(FILES ${Pangolin_LIBRARIES}/libpangolin.so
+RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
