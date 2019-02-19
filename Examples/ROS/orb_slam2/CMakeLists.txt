@@ -122,7 +122,7 @@ install(DIRECTORY ${ORB_SLAM2_SOURCE_DIR}/include
 )
 
 ## install orbslam2 library
-install(FILES ${ORB_SLAM2_SOURCE_DIR}/lib/libORB_SLAM2.so ${Pangolin_LIBRARIES}
+install(FILES ${ORB_SLAM2_SOURCE_DIR}/lib/libORB_SLAM2.so
   DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 )
 
