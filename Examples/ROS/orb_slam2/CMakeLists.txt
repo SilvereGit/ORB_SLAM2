@@ -1,18 +1,26 @@
 cmake_minimum_required(VERSION 2.8.3)
 
-project(orb_slam2)
+project(ORB_SLAM2)
 
 find_package(catkin REQUIRED COMPONENTS
   roscpp
+  rosbag
   sensor_msgs
   image_transport
   message_filters
   cv_bridge
+  tf
 )
 
 find_package(OpenCV  REQUIRED)
+if(NOT OpenCV_FOUND)
+	message(FATAL_ERROR "OpenCV not found.")
+endif()
 find_package(Eigen3 REQUIRED)
 find_package(Pangolin REQUIRED)
+if(NOT Pangolin_FOUND)
+	message(FATAL_ERROR "Pangolin not found.")
+endif()
 
 set(ORB_SLAM2_SOURCE_DIR ${PROJECT_SOURCE_DIR}/../../..)
 LIST(APPEND CMAKE_MODULE_PATH ${ORB_SLAM2_SOURCE_DIR}/cmake_modules)
@@ -24,7 +32,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall  -O3 -march=native")
 
 
 set(orb_slam2_INCLUDE_DIRS
-  ${PROJECT_SOURCE_DIR}/include    # orb_slam2/System.h
+  ${PROJECT_SOURCE_DIR}/../../../include    # orb_slam2/System.h
   ${ORB_SLAM2_SOURCE_DIR}/include  # System.h
   ${ORB_SLAM2_SOURCE_DIR}          # Thirparty
 )
@@ -72,6 +80,8 @@ set(LIBRARIES
   ${OpenCV_LIBRARIES}
   ${Eigen3_LIBRARIES}
   ${Pangolin_LIBRARIES}
+-lboost_system
+-lconsole_bridge
 )
 
 
@@ -79,6 +89,9 @@ set(LIBRARIES
 add_executable(mono src/ros_mono.cc)
 target_link_libraries(mono ${LIBRARIES})
 
+# Node for monocular camera
+add_executable(Mono2 src/ros_mono2.cc)
+target_link_libraries(Mono2 ${LIBRARIES})
 
 # Node for RGB-D camera
 add_executable(rgbd src/ros_rgbd.cc )
@@ -97,7 +110,7 @@ target_link_libraries(stereo ${LIBRARIES})
 # See http://ros.org/doc/api/catkin/html/adv_user_guide/variables.html
 
 ## Mark executables and/or libraries for installation
-install(TARGETS mono rgbd stereo
+install(TARGETS mono rgbd stereo Mono2
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
@@ -108,3 +121,11 @@ install(DIRECTORY ${ORB_SLAM2_SOURCE_DIR}/include
    DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
 )
 
+## install orbslam2 library
+install(FILES ${ORB_SLAM2_SOURCE_DIR}/lib/libORB_SLAM2.so
+  DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+)
+## install orb vocabulary
+install(FILES ${ORB_SLAM2_SOURCE_DIR}/Vocabulary/ORBvoc.txt
+DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+)
