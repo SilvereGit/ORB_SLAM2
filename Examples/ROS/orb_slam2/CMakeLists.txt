@@ -13,8 +13,14 @@ find_package(catkin REQUIRED COMPONENTS
 )
 
 find_package(OpenCV  REQUIRED)
+if(NOT OpenCV_FOUND)
+	message(FATAL_ERROR "OpenCV not found.")
+endif()
 find_package(Eigen3 REQUIRED)
 find_package(Pangolin REQUIRED)
+if(NOT Pangolin_FOUND)
+	message(FATAL_ERROR "Pangolin not found.")
+endif()
 
 set(ORB_SLAM2_SOURCE_DIR ${PROJECT_SOURCE_DIR}/../../..)
 LIST(APPEND CMAKE_MODULE_PATH ${ORB_SLAM2_SOURCE_DIR}/cmake_modules)
@@ -116,7 +122,7 @@ install(DIRECTORY ${ORB_SLAM2_SOURCE_DIR}/include
 )
 
 ## install orbslam2 library
-install(FILES ${ORB_SLAM2_SOURCE_DIR}/lib/libORB_SLAM2.so
+install(FILES ${ORB_SLAM2_SOURCE_DIR}/lib/libORB_SLAM2.so ${Pangolin_LIBRARIES}
   DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 )
 
