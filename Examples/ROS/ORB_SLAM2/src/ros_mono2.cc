@@ -105,6 +105,7 @@ int main(int argc, char **argv)
 	//read config
 	std::ifstream file(argv[3]);
 	std::string data_folder_path, video_path, line;
+	
 	std::getline(file, data_folder_path);
 	std::getline(file, video_path);
 	std::getline(file, line);
@@ -113,10 +114,13 @@ int main(int argc, char **argv)
 	double fps = std::stod(line);
 	double frame_duration = 1.0/fps;
 	std::getline(file, line);
-	//bool resize_bool = to_bool(line);
 	double resize_double = std::stod(line);
 	std::getline(file, line);
 	bool PLOT = to_bool(line);
+	std::getline(file, line);
+	int start_video_idx = std::stoi(line);
+	std::getline(file, line);
+	int end_video_idx = std::stoi(line);
 	//ROS_INFO_STREAM(line);
 
 	// Create SLAM system. It initializes all system threads and gets ready to process frames.
@@ -126,9 +130,23 @@ int main(int argc, char **argv)
 	//ros::NodeHandle nodeHandler;
 
 	//open video
+	cv::Mat frame;
+	int frame_idx = -1;
 	cv::VideoCapture capture(video_path);
 	if( !capture.isOpened() )
-        	throw "Error when reading video";
+		throw std::invalid_argument( "Error when reading video" );
+
+	//set frame to start_video_idx
+	bool success = capture.set(CV_CAP_PROP_POS_FRAMES, start_video_idx);
+	if (!success){
+		for(int i=0; i<start_video_idx; i++){
+			capture >> frame;
+			frame_idx++;
+		}
+	}else{
+		frame_idx=start_video_idx;
+	}
+	double frame_time = first_time_stamp + double(frame_idx)*frame_duration;
 
 	//read calibration
 	/*cv::FileStorage fs("/home/silvere/Downloads/000-000-viljandi/0012/out_camera_params.xml", cv::FileStorage::READ);
@@ -142,25 +160,23 @@ int main(int argc, char **argv)
 	bag.open(data_folder_path + "odometry.bag", rosbag::bagmode::Write);
 
 	//variables
-	cv::Mat frame;
 	bool publish=true;
 	tf::Transform pose_previous;
 	pose_previous.setOrigin( tf::Vector3(0.0, 0.0, 0.0));
     	tf::Quaternion q(0.0, 0.0, 0.0, 1.0);
     	pose_previous.setRotation(q);
 	nav_msgs::Odometry odometry_msg;
-	double frame_time = first_time_stamp;
 	//start tracking
 	if(publish){
 		//ros::Publisher slam_pub = n.advertise<tf::Transform>("mono", 1000);
-		while (ros::ok()){
+		while (ros::ok() && frame_idx<=end_video_idx){
 			//read image
 			capture >> frame;
+			frame_idx++;
 			if(frame.size().width < 1){
 				break;
 				frame_time = frame_time + frame_duration;
 			}
-			//
 			//resize image
 			if(resize_double != 1.0){
 				cv::resize(frame, frame, cv::Size(), resize_double, resize_double);
@@ -190,8 +206,11 @@ int main(int argc, char **argv)
     SLAM.Shutdown();
 
     // Save camera trajectory
+    ROS_INFO("Saving frame trajectory.");
+    SLAM.SaveFrameTrajectory(data_folder_path + "FrameTrajectory.txt");
+    ROS_INFO("Saving keyframe trajectory.");
     SLAM.SaveKeyFrameTrajectoryTUM(data_folder_path + "KeyFrameTrajectory.txt");
-    SLAM.SaveTrajectoryTUM(data_folder_path + "FrameTrajectory.txt");
+    
     //SLAM.SaveTrajectoryTUM2(data_folder_path + "FrameTrajectory2.txt");
     //SLAM.SaveTrajectoryKITTI(data_folder_path + "FrameTrajectoryKITTI.txt");
 

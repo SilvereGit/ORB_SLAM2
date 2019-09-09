@@ -99,6 +99,7 @@ public:
     // Only for stereo and RGB-D. This method does not work for monocular.
     // Call first Shutdown()
     // See format details at: http://vision.in.tum.de/data/datasets/rgbd-dataset
+    void SaveFrameTrajectory(const string &filename);
     void SaveTrajectoryTUM(const string &filename);
     void SaveTrajectoryTUM2(const string &filename);
 
